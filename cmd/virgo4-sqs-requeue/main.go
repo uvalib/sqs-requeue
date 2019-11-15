@@ -58,7 +58,7 @@ func main() {
 			}
 
 			opStatus, err := aws.BatchMessagePut(outQueueHandle, outMessages)
-			if err != nil && err != awssqs.OneOrMoreOperationsUnsuccessfulError {
+			if err != nil && err != awssqs.ErrOneOrMoreOperationsUnsuccessful {
 				log.Fatal(err)
 			}
 
@@ -71,7 +71,7 @@ func main() {
 
 			// delete them all
 			opStatus, err = aws.BatchMessageDelete(inQueueHandle, inMessages)
-			if err != nil && err != awssqs.OneOrMoreOperationsUnsuccessfulError {
+			if err != nil && err != awssqs.ErrOneOrMoreOperationsUnsuccessful {
 				log.Fatal(err)
 			}
 
