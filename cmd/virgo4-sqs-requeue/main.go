@@ -40,9 +40,9 @@ func main() {
 
 		// wait for a batch of messages
 		inMessages, err := aws.BatchMessageGet(inQueueHandle, awssqs.MAX_SQS_BLOCK_COUNT, time.Duration(cfg.PollTimeOut)*time.Second)
-		if err != nil {
-			log.Fatal(err)
-		}
+		//if err != nil {
+		//	log.Fatal(err)
+		//}
 
 		// did we receive any?
 		sz := len(inMessages)
@@ -53,8 +53,12 @@ func main() {
 
 			// make our outbound buffer
 			outMessages := make([]awssqs.Message, 0, count)
-			for _, m := range inMessages {
-				outMessages = append(outMessages, *m.ContentClone())
+			for ix, m := range inMessages {
+				if m.Incomplete == true {
+					log.Printf("WARNING: message %d is incomplete, not requeuing", ix)
+				} else {
+					outMessages = append(outMessages, *m.ContentClone())
+				}
 			}
 
 			opStatus, err := aws.BatchMessagePut(outQueueHandle, outMessages)
