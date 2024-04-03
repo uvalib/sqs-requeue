@@ -39,7 +39,7 @@ func main() {
 	for {
 
 		// wait for a batch of messages
-		inMessages, err := aws.BatchMessageGet(inQueueHandle, awssqs.MAX_SQS_BLOCK_COUNT, time.Duration(cfg.PollTimeOut)*time.Second)
+		inMessages, _ := aws.BatchMessageGet(inQueueHandle, awssqs.MAX_SQS_BLOCK_COUNT, time.Duration(cfg.PollTimeOut)*time.Second)
 		//if err != nil {
 		//	log.Fatal(err)
 		//}
